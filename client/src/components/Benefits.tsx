@@ -1,133 +1,145 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
-const benefitsData = [
-  { icon: "📈", text: "Boost Acquisition" },
-  { icon: "🔁", text: "Improve Retention" },
-  { icon: "🛡️", text: "Enhance Security" },
-  { icon: "💰", text: "Drive Conversions" },
-  { icon: "🎯", text: "Recover Churn" },
-];
-
-const Benefits = () => {
-  const blobRefs = useRef<Array<HTMLDivElement | null>>([]);
+const BenefitsGrid = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const cellsRef = useRef<HTMLDivElement[]>([]);
+  
+  const benefits = [
+    { label: "Higher Deliverability", color: "#FF6B6B" },
+    { label: "Better Conversions", color: "#4ECDC4" }, 
+    { label: "Secure Routing", color: "#45A7E6" },
+    { label: "Global Reach", color: "#A374FF" },
+    { label: "Instant Scaling", color: "#FFB347" }
+  ];
 
   useEffect(() => {
-    // Floating animation for blobs
-    blobRefs.current.forEach((el, i) => {
-      if (el) {
-        gsap.to(el, {
-          y: "+=30",
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          duration: 3 + i * 0.3,
-          delay: i * 0.2,
+    // Create animated tile grid
+    const cellSize = 60;
+    const columns = Math.ceil(window.innerWidth / cellSize);
+    const rows = Math.ceil(window.innerHeight * 0.4 / cellSize);
+    
+    cellsRef.current = [];
+    
+    if (containerRef.current) {
+      containerRef.current.innerHTML = '';
+      
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < columns; x++) {
+          const cell = document.createElement('div');
+          cell.className = 'absolute bg-gray-800/20 border border-white/5';
+          cell.style.width = `${cellSize}px`;
+          cell.style.height = `${cellSize}px`;
+          cell.style.left = `${x * cellSize}px`;
+          cell.style.top = `${y * cellSize}px`;
+          
+          containerRef.current.appendChild(cell);
+          cellsRef.current.push(cell);
+        }
+      }
+    }
+
+    // Mouse move interaction
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!containerRef.current) return;
+      
+      const rect = containerRef.current.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      
+      cellsRef.current.forEach((cell, i) => {
+        const rect = cell.getBoundingClientRect();
+        const dx = (rect.left + rect.width/2) - mouseX;
+        const dy = (rect.top + rect.height/2) - mouseY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        gsap.to(cell, {
+          background: `rgba(255,255,255,${0.05 + 0.15 * (1 - Math.min(distance/200, 1))})`,
+          scale: 1 - (0.1 * (1 - Math.min(distance/300, 1))),
+          duration: 0.5
         });
-      }
-    });
-
-    // Three.js floating particles background
-    import("three").then(THREE => {
-      if (!canvasRef.current) return;
-      const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, alpha: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
-
-      // Define scene and camera
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-      );
-      camera.position.z = 5;
-
-      const geometry = new THREE.BufferGeometry();
-      const vertices = [];
-      for (let i = 0; i < 1000; i++) {
-        const x = THREE.MathUtils.randFloatSpread(20);
-        const y = THREE.MathUtils.randFloatSpread(20);
-        const z = THREE.MathUtils.randFloatSpread(20);
-        vertices.push(x, y, z);
-      }
-      geometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
-      const material = new THREE.PointsMaterial({ color: 0x00ffff, size: 0.04 });
-      const particles = new THREE.Points(geometry, material);
-      scene.add(particles);
-
-      const animate = () => {
-        requestAnimationFrame(animate);
-        particles.rotation.y += 0.0006;
-        particles.rotation.x += 0.0003;
-        renderer.render(scene, camera);
-      };
-      animate();
-
-      window.addEventListener("resize", () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
       });
-    });
+    }
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   return (
-    <section className="relative w-full py-32 px-6 md:px-20 bg-[#0F172A] overflow-hidden text-white">
-      {/* 3D Particles Canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0 pointer-events-none" />
+  <section className="relative w-full min-h-[100vh] pt-40 pb-32 px-6 bg-gray-950 overflow-hidden">
+    
+    {/* Animated grid background - place it before the content */}
+    <div 
+      ref={containerRef}
+      className="absolute inset-0 w-full h-full pointer-events-none z-0"
+    >
+      <div 
+        className="absolute inset-0 bg-gradient-to-b from-violet-950/50 to-gray-950/90"
+        style={{ backdropFilter: 'blur(10px)' }}
+      />
+    </div>
 
-      {/* Neon Background glows */}
-      <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-pink-400/20 blur-[160px] rounded-full z-0" />
-      <div className="absolute bottom-[-150px] right-[-150px] w-[400px] h-[400px] bg-blue-400/20 blur-[140px] rounded-full z-0" />
-
-      {/* Header */}
-      <div className="relative z-10 max-w-4xl mx-auto text-center mb-24">
-        <h2 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight leading-tight">
-          Morphing Benefits of A2P SMS
+    {/* Content - sits above grid */}
+    <div className="relative z-10 max-w-7xl mx-auto">
+      <div className="text-center mb-28">
+        <h2 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300 mb-6">
+          Why Our Network Wins
         </h2>
-        <p className="text-lg text-white/60">
-          Not boxes. Not cards. Just pure motion-driven clarity that flows through user intent.
+        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          Cutting through the noise with bulletproof infrastructure
         </p>
       </div>
 
-      {/* Morphing Floating Blobs - Single Line Layout */}
-      <div className="relative z-10 w-full max-w-8xl mx-auto h-[300px] flex items-center justify-center gap-12 overflow-hidden">
-        {benefitsData.map((item, i) => (
-          <div
+      {/* Benefit tiles */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-8 max-w-6xl mx-auto">
+        {benefits.map((benefit, i) => (
+          <div 
             key={i}
-            ref={el => { blobRefs.current[i] = el; }}
-            className="relative min-w-[200px] h-[200px] bg-gradient-to-br from-[#ff4dff33] via-[#00ffff33] to-[#ffffff22] rounded-[60%] animate-morph backdrop-blur-lg border border-white/10 shadow-[0_0_60px_rgba(0,255,255,0.1)] flex items-center justify-center text-center px-4 hover:scale-105 transition-transform duration-300"
+            className="relative bg-black/20 border border-white/10 rounded-xl p-8 backdrop-blur-sm hover:backdrop-blur-md transition-all"
+            style={{
+              boxShadow: `0 0 40px ${benefit.color}30`,
+              transformStyle: 'preserve-3d'
+            }}
+            onMouseEnter={(e) => {
+              gsap.to(e.currentTarget, {
+                y: -10,
+                boxShadow: `0 0 60px ${benefit.color}50`,
+                duration: 0.3
+              });
+            }}
+            onMouseLeave={(e) => {
+              gsap.to(e.currentTarget, {
+                y: 0,
+                boxShadow: `0 0 40px ${benefit.color}30`,
+                duration: 0.3
+              });
+            }}
           >
-            <div className="text-4xl mb-2">{item.icon}</div>
-            <p className="text-white/80 text-base font-medium leading-snug">
-              {item.text}
+            <div 
+              className="w-4 h-4 rounded-full mb-4"
+              style={{ background: benefit.color }}
+            />
+            <h3 
+              className="text-xl font-semibold mb-2"
+              style={{ color: benefit.color }}
+            >
+              {benefit.label}
+            </h3>
+            <p className="text-gray-300 text-sm">
+              {i === 0 && "99.97% delivery rates through proprietary routes"}
+              {i === 1 && "2-5x better conversion than standard providers"}
+              {i === 2 && "Military-grade encryption at every network hop"}
+              {i === 3 && "Direct connections in 50+ target markets"}
+              {i === 4 && "Add 100,000+ messages in seconds with zero lag"}
             </p>
           </div>
         ))}
       </div>
+    </div>
+  </section>
+);
 
-      {/* Morphing Keyframes */}
-      <style>{`
-        @keyframes morph {
-          0% {
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-          }
-          50% {
-            border-radius: 40% 60% 70% 30% / 30% 60% 40% 70%;
-          }
-          100% {
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-          }
-
-          .animate-morph {
-            animation: morph 10s ease-in-out infinite;
-          }
-        `}</style>
-    </section>
-  );
 };
 
-export default Benefits;
+export default BenefitsGrid;

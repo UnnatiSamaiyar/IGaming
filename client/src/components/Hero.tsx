@@ -1,97 +1,85 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import * as THREE from "three";
 
 const Hero = () => {
-  const containerRef = useRef(null);
-  const canvasRef = useRef(null);
-  const gridRef = useRef(null);
+  const ref = useRef(null);
 
   useEffect(() => {
-    // Text animation
-    gsap.fromTo(
-      containerRef.current,
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, duration: 1.5, ease: "power3.out", delay: 0.5 }
-    );
-
-    // THREE.js background particles
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    if (!canvasRef.current) return;
-    const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    camera.position.z = 5;
-
-    const geometry = new THREE.BufferGeometry();
-    const vertices = [];
-    for (let i = 0; i < 1000; i++) {
-      const x = THREE.MathUtils.randFloatSpread(20);
-      const y = THREE.MathUtils.randFloatSpread(20);
-      const z = THREE.MathUtils.randFloatSpread(20);
-      vertices.push(x, y, z);
+    if (ref.current) {
+      gsap.fromTo(
+        ref.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" }
+      );
     }
-    geometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
-    const material = new THREE.PointsMaterial({ color: 0x00ffff, size: 0.03 });
-    const particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-
-    const animate = () => {
-      requestAnimationFrame(animate);
-      particles.rotation.y += 0.0007;
-      particles.rotation.x += 0.0003;
-      renderer.render(scene, camera);
-    };
-    animate();
-
-    window.addEventListener("resize", () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
   }, []);
 
   return (
-    <section className="relative w-full h-screen bg-black overflow-hidden">
-      {/* Background layers */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" />
-      <div
-        ref={gridRef}
-        className="absolute inset-0 z-0 opacity-10 bg-[radial-gradient(circle,rgba(0,255,255,0.2)_1px,transparent_1px)] [background-size:40px_40px] animate-pulse"
-      ></div>
+    <section className="relative w-full h-screen overflow-hidden bg-gradient-to-tr from-[#0B0F1C] to-[#1F1B35] px-6 md:px-16">
+      {/* Background grid effect */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:30px_30px] opacity-10 z-0" />
 
-      {/* Hero Content */}
+      {/* Ambient Glow */}
+      <div className="absolute w-[300px] h-[300px] bg-[#925CFF]/20 blur-3xl rounded-full top-24 left-10 animate-pulse z-0" />
+
       <div
-        ref={containerRef}
-        className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center px-6"
+        ref={ref}
+        className="relative z-10 w-full h-full flex flex-col md:flex-row items-center justify-between gap-12 max-w-7xl mx-auto"
       >
-        <h1 className="text-white text-4xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6 relative">
-          <span className="text-cyan-400">Enter</span> the Future of Engagement
-          <span className="absolute inset-0 blur-2xl text-cyan-400 opacity-30">Enter the Future of Engagement</span>
-        </h1>
-        <p className="text-white/60 max-w-xl text-lg mb-12">
-          Journey through a neon-powered world of intelligent, immersive, instant messaging.
-        </p>
-        <div className="relative w-8 h-8 animate-bounce">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-full h-full text-cyan-400 drop-shadow-[0_0_6px_rgba(0,255,255,0.7)]"
-          >
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
+        {/* Left Text Content */}
+        <div className="flex-1 text-left pt-24 md:pt-32">
+          <span className="inline-block text-sm bg-white/10 text-white px-4 py-1 rounded-full backdrop-blur border border-white/10 mb-4">
+            Secure. Scalable. Crypto SaaS.
+          </span>
+          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight mb-6">
+            Gain Clarity<br />Take Control<br />Grow
+          </h1>
+          <p className="text-white/60 text-lg mb-8 max-w-md">
+            A powerful crypto SaaS platform designed to help you launch, manage, and scale digital assets and blockchain-based financial tools securely and efficiently.
+          </p>
+
+          <div className="flex gap-4 flex-wrap">
+            <button className="group bg-[#925CFF] hover:bg-[#7F3FFF] text-white font-semibold px-6 py-3 rounded-full shadow-md transition flex items-center gap-2">
+              <span className="group-hover:-translate-x-1 transition-transform">🚀</span> Get Started
+            </button>
+            <button className="bg-white/10 hover:bg-white/20 border border-white/10 text-white font-medium px-6 py-3 rounded-full transition">
+              Learn More
+            </button>
+          </div>
+
+          <div className="flex items-center gap-6 mt-10 text-white/80 text-sm">
+            <div className="flex -space-x-2">
+              <img
+                src="/assets/avatar1.png"
+                alt="user1"
+                className="w-8 h-8 rounded-full border-2 border-white/10"
+              />
+              <img
+                src="/assets/avatar2.png"
+                alt="user2"
+                className="w-8 h-8 rounded-full border-2 border-white/10"
+              />
+            </div>
+            <span className="hover:text-white transition duration-300">99.9% Uptime</span>
+            <span className="hover:text-white transition duration-300">400k+ Active Users</span>
+          </div>
         </div>
+
+        {/* Right Image Mockup */}
+        <div className="flex-1 relative w-full max-w-xl">
+          <img
+            src="/assets/hero-dashboard.png"
+            alt="dashboard-preview"
+            className="rounded-2xl shadow-lg border border-white/10 w-full h-auto"
+          />
+        </div>
+      </div>
+
+      {/* Scroll Cue */}
+      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
       </div>
     </section>
   );
