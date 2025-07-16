@@ -21,7 +21,7 @@ const CyberHero = () => {
     )
     camera.position.set(0, 0, 30)
 
-    const renderer = new THREE.WebGLRenderer({ 
+    const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true
     })
@@ -125,7 +125,7 @@ const CyberHero = () => {
     const handleMouseMove = (e) => {
       const x = (e.clientX / window.innerWidth) * 2 - 1
       const y = (e.clientY / window.innerHeight) * 2 - 1
-      
+
       gsap.to(helixGroup.rotation, {
         x: y * -0.3,
         y: x * 0.5,
@@ -137,16 +137,16 @@ const CyberHero = () => {
 
     // Animation loop
     const clock = new THREE.Clock()
-    
+
     const animate = () => {
       requestAnimationFrame(animate)
-      
+
       const elapsedTime = clock.getElapsedTime()
-      
+
       helixGroup.rotation.z += 0.002
       hologram.rotation.x = elapsedTime * 0.1
       hologram.rotation.y = elapsedTime * 0.1
-      
+
       particles.rotation.x = elapsedTime * 0.01
       particles.rotation.y = elapsedTime * 0.02
 
@@ -171,9 +171,9 @@ const CyberHero = () => {
       renderer.setSize(window.innerWidth, window.innerHeight)
       composer.setSize(window.innerWidth, window.innerHeight)
     }
-    
+
     window.addEventListener('resize', handleResize)
-    
+
     return () => {
       window.removeEventListener('resize', handleResize)
       window.removeEventListener('mousemove', handleMouseMove)
@@ -185,40 +185,56 @@ const CyberHero = () => {
     <div className="relative w-full h-screen overflow-hidden bg-gray-900">
       {/* Three.js Canvas */}
       <div ref={mountRef} className="absolute inset-0" />
-      
+
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/40" />
-      
+
       {/* Content */}
-      <div ref={textRef} className="relative z-10 h-full flex flex-col justify-center px-8 md:px-16 lg:px-32 max-w-7xl mx-auto">
-        <span className="inline-block mb-6 px-4 py-2 bg-blue-900/30 backdrop-blur border border-blue-400/30 rounded-full text-blue-300 text-sm">
+      <div
+        ref={textRef}
+        className="relative mt-6 z-10 h-full flex flex-col justify-center px-4 sm:px-6 md:px-12 lg:px-24 xl:px-32 max-w-7xl mx-auto"
+      >
+        <span className="inline-block mb-4 sm:mb-6 p-5 py-1 bg-blue-900/30 backdrop-blur border border-blue-400/30 rounded-full text-blue-300 text-xs sm:text-sm w-fit">
           Enterprise Blockchain Solutions
         </span>
-        
-        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+
+
+        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-snug sm:leading-tight">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
             Revolutionize
           </span>
           <br />
           And Reach Casino & iGaming Players Instantly with A2P SMS
         </h1>
-        
-        <p className="text-xl text-gray-300 mb-10 max-w-2xl">
-          Convert, retain, and grow your iGaming audience with powerful SMS marketing. Fast delivery. High open rates. Casino-friendly routes.
+
+        <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-8 sm:mb-10 max-w-2xl">
+          Convert, retain, and grow your iGaming audience with powerful SMS marketing.
+          Fast delivery. High open rates. Casino-friendly routes.
         </p>
-        
-        <div className="flex gap-4">
-          <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-lg text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 flex items-center gap-2">
+
+        <div className="flex flex-wrap gap-4">
+          <button className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-lg text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
             Get Started
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 sm:h-5 sm:w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
             </svg>
           </button>
-          <button className="px-8 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg text-white hover:bg-white/20 transition-all duration-300 flex items-center gap-2">
+
+          <button className="px-6 sm:px-8 py-3 sm:py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg text-white hover:bg-white/20 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
             Request Demo
           </button>
         </div>
       </div>
+
     </div>
   )
 }

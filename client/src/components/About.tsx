@@ -179,7 +179,7 @@ const About = () => {
       {!isMobile && (
         <div
           ref={cursorRef}
-          className="fixed w-8 h-8 rounded-full bg-white mix-blend-difference pointer-events-none z-50"
+          className="fixed w-8 h-8 rounded-full mix-blend-difference pointer-events-none z-50"
         />
       )}
 
@@ -198,7 +198,6 @@ const About = () => {
         ))}
       </div>
 
-      <div className="distortion-bg absolute inset-0 bg-[url('/path-to-texture.png')] opacity-10" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
@@ -251,7 +250,7 @@ const About = () => {
                 {features.map((feature, i) => (
                   <div
                     key={i}
-                    className="feature-card p-6 rounded-xl bg-gradient-to-br from-zinc-900/50 to-zinc-800/20 border border-zinc-800/40 hover:border-zinc-700 transition-all"
+                    className=" p-6 rounded-xl bg-gradient-to-br from-zinc-900/50 to-zinc-800/20 border border-zinc-800/40 hover:border-zinc-700 transition-all"
                   >
                     <div className="text-3xl mb-3">{feature.icon}</div>
                     <h3 className="text-xl font-semibold mb-2">
