@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,7 +32,76 @@ const USE_CASES = [
   }
 ];
 
-const Case = () => {
+interface TrueFocusProps {
+  sentence?: string;
+  manualMode?: boolean;
+  blurAmount?: number;
+  borderColor?: string;
+  glowColor?: string;
+  animationDuration?: number;
+  pauseBetweenAnimations?: number;
+}
+
+interface FocusRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+const Case: React.FC<TrueFocusProps> = ({
+  sentence = "Why SMS Marketing Works",
+  manualMode = false,
+  blurAmount = 5,
+  borderColor = "green",
+  glowColor = "rgba(0, 255, 0, 0.6)",
+  animationDuration = 0.5,
+  pauseBetweenAnimations = 1,
+}) => {
+  const words = sentence.split(" ");
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [lastActiveIndex, setLastActiveIndex] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const [focusRect, setFocusRect] = useState<FocusRect>({ x: 0, y: 0, width: 0, height: 0 });
+
+  useEffect(() => {
+    if (!manualMode) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % words.length);
+      }, (animationDuration + pauseBetweenAnimations) * 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [manualMode, animationDuration, pauseBetweenAnimations, words.length]);
+
+  useEffect(() => {
+    if (currentIndex === null || currentIndex === -1) return;
+    if (!wordRefs.current[currentIndex] || !containerRef.current) return;
+
+    const parentRect = containerRef.current.getBoundingClientRect();
+    const activeRect = wordRefs.current[currentIndex]!.getBoundingClientRect();
+
+    setFocusRect({
+      x: activeRect.left - parentRect.left,
+      y: activeRect.top - parentRect.top,
+      width: activeRect.width,
+      height: activeRect.height,
+    });
+  }, [currentIndex, words.length]);
+
+  const handleMouseEnter = (index: number) => {
+    if (manualMode) {
+      setLastActiveIndex(index);
+      setCurrentIndex(index);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (manualMode) {
+      setCurrentIndex(lastActiveIndex!);
+    }
+  };
   const ref = useRef<HTMLDivElement>(null);
   const whyRef = useRef<HTMLDivElement>(null);
 
@@ -76,9 +146,9 @@ const Case = () => {
   return (
     <section
       ref={ref}
-      className="relative w-full py-24 px-6 md:px-20 bg-gradient-to-b from-black to-pink-500/20 text-white overflow-hidden"
+      className="relative w-full py-24 px-6 md:px-20 bg-gradient-to-b from-black to-pink-500/13 text-white overflow-hidden"
     >
-      {/* Background Glow Blobs */} 
+      {/* Background Glow Blobs */}
 
       {/* Header */}
       <div className="relative z-10 max-w-6xl mx-auto text-center mb-16">
@@ -116,15 +186,84 @@ const Case = () => {
         ref={whyRef}
         className="relative z-10 mt-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto"
       >
-        <h3
-          className="text-4xl md:text-5xl font-extrabold text-center mb-12 
-                     bg-gradient-to-r from-cyan-400 via-sky-500 to-blue-600 
-                     bg-clip-text text-transparent 
-                     drop-shadow-[0_0_12px_rgba(0,255,255,0.25)] 
-                     tracking-tight"
+        <div
+          className="relative flex gap-4 mb-5 justify-center items-center flex-wrap"
+          ref={containerRef}
         >
-          Why SMS Marketing Works
-        </h3>
+          {words.map((word, index) => {
+            const isActive = index === currentIndex;
+            return (
+              <span
+                key={index}
+                ref={(el) => { wordRefs.current[index] = el; }}
+                className="relative text-[3rem] font-black cursor-pointer"
+                style={{
+                  filter: manualMode
+                    ? isActive
+                      ? `blur(0px)`
+                      : `blur(${blurAmount}px)`
+                    : isActive
+                      ? `blur(0px)`
+                      : `blur(${blurAmount}px)`,
+                  transition: `filter ${animationDuration}s ease`,
+                } as React.CSSProperties}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
+              >
+                {word}
+              </span>
+            );
+          })}
+
+          <motion.div
+            className="absolute top-0 left-0 pointer-events-none box-border border-0"
+            animate={{
+              x: focusRect.x,
+              y: focusRect.y,
+              width: focusRect.width,
+              height: focusRect.height,
+              opacity: currentIndex >= 0 ? 1 : 0,
+            }}
+            transition={{
+              duration: animationDuration,
+            }}
+            style={{
+              "--border-color": borderColor,
+              "--glow-color": glowColor,
+            } as React.CSSProperties}
+          >
+            <span
+              className="absolute w-4 h-4 border-[3px] rounded-[3px] top-[-10px] left-[-10px] border-r-0 border-b-0"
+              style={{
+                borderColor: "var(--border-color)",
+                filter: "drop-shadow(0 0 4px var(--border-color))",
+              }}
+            ></span>
+            <span
+              className="absolute w-4 h-4 border-[3px] rounded-[3px] top-[-10px] right-[-10px] border-l-0 border-b-0"
+              style={{
+                borderColor: "var(--border-color)",
+                filter: "drop-shadow(0 0 4px var(--border-color))",
+              }}
+            ></span>
+            <span
+              className="absolute w-4 h-4 border-[3px] rounded-[3px] bottom-[-10px] left-[-10px] border-r-0 border-t-0"
+              style={{
+                borderColor: "var(--border-color)",
+                filter: "drop-shadow(0 0 4px var(--border-color))",
+              }}
+            ></span>
+            <span
+              className="absolute w-4 h-4 border-[3px] rounded-[3px] bottom-[-10px] right-[-10px] border-l-0 border-t-0"
+              style={{
+                borderColor: "var(--border-color)",
+                filter: "drop-shadow(0 0 4px var(--border-color))",
+              }}
+            ></span>
+          </motion.div>
+        </div>
+
+
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Card 1 */}
