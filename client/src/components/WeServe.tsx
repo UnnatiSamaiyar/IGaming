@@ -56,11 +56,10 @@ const WeServe = () => {
   return (
     <section
       ref={ref}
-      className="relative w-full py-24 px-6 md:px-20 bg-[#0F172A] text-white overflow-hidden"
+      className="relative w-full py-24 px-6 md:px-20 bg-[#000000] text-white overflow-hidden"
     >
       {/* Gradient Glows */}
-      <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-pink-400/10 blur-3xl rounded-full z-0" />
-      <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-cyan-400/10 blur-3xl rounded-full z-0" />
+      <div className="absolute -bottom-50 -left-30 w-[400px] h-[400px] bg-pink-500/20 blur-3xl rounded-full z-0" />
 
       <div className="relative z-10 max-w-6xl mx-auto text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold mb-4">Industries We Serve</h2>

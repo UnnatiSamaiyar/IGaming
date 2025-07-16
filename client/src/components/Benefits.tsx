@@ -165,7 +165,8 @@ const Benefits = () => {
         className="absolute inset-0 w-full h-full pointer-events-none z-0"
       />
       <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-pink-400/10 blur-3xl rounded-full z-0" />
-      <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-cyan-400/10 blur-3xl rounded-full z-0" />
+      
+      <div className="absolute -top-50 right-0 w-[400px] h-[400px] bg-cyan-400/20 blur-3xl rounded-full z-0" />
       {/* Gradient overlay */}
       <div className="absolute inset-0  z-1" />
 
