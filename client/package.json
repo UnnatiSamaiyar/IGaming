@@ -16,15 +16,18 @@
     "@tailwindcss/vite": "^4.1.11",
     "@tsparticles/react": "^3.0.0",
     "barba.js": "^1.0.0",
+    "dat.gui": "^0.7.9",
     "framer-motion": "^12.23.3",
     "gsap": "^3.13.0",
     "react": "^19.1.0",
+    "react-dat-gui": "^4.1.1",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.3",
     "react-tsparticles": "^2.12.2",
     "sonner": "^2.0.6",
     "tailwindcss": "^4.1.11",
     "three": "^0.178.0",
+    "three-stdlib": "^2.36.0",
     "tsparticles": "^3.8.1"
   },
   "devDependencies": {

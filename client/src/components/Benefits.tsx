@@ -1,145 +1,254 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
-const BenefitsGrid = () => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const cellsRef = useRef<HTMLDivElement[]>([]);
-  
+const Benefits = () => {
+  const containerRef = useRef(null);
+  const cardsRef = useRef([]);
+  const gridRef = useRef([]);
+  const titleRef = useRef(null);
+
   const benefits = [
-    { label: "Higher Deliverability", color: "#FF6B6B" },
-    { label: "Better Conversions", color: "#4ECDC4" }, 
-    { label: "Secure Routing", color: "#45A7E6" },
-    { label: "Global Reach", color: "#A374FF" },
-    { label: "Instant Scaling", color: "#FFB347" }
+    {
+      title: "User Acquisition",
+      icon: "🚀",
+      details: [
+        "Instant welcome messages with bonus codes",
+        "Real-time first deposit triggers (FTDs)",
+        "Verification code delivery (99.9% deliverability)"
+      ],
+      color: "#FF6B6B"
+    },
+    {
+      title: "Player Retention",
+      icon: "🔄", 
+      details: [
+        "Personalized cashback offers via SMS",
+        "Time-sensitive tournament alerts",
+        "Dormant player reactivation campaigns"
+      ],
+      color: "#4ECDC4"
+    },
+    {
+      title: "Security Shield",
+      icon: "🛡️",
+      details: [
+        "2FA for all transactions (OTP delivery)",
+        "Instant suspicious activity alerts",
+        "Regulatory compliance messaging"
+      ],
+      color: "#45A7E6"
+    },
+    {
+      title: "Revenue Growth",
+      icon: "💰",
+      details: [
+        "AI-driven personalized game offers",
+        "Cross-promotion of new slot titles",
+        "High-roller deposit incentives"
+      ],
+      color: "#A374FF"
+    },
+    {
+      title: "Churn Defense",
+      icon: "🎯",
+      details: [
+        "Automated win-back SMS sequences",
+        "Abandoned gameplay recovery",
+        "VIP loyalty retention programs"
+      ],
+      color: "#FFB347"
+    }
   ];
 
   useEffect(() => {
-    // Create animated tile grid
-    const cellSize = 60;
-    const columns = Math.ceil(window.innerWidth / cellSize);
-    const rows = Math.ceil(window.innerHeight * 0.4 / cellSize);
-    
-    cellsRef.current = [];
-    
-    if (containerRef.current) {
-      containerRef.current.innerHTML = '';
+    // Create dynamic fluid grid
+    const createGrid = () => {
+      if (!containerRef.current) return;
       
+      containerRef.current.innerHTML = '';
+      gridRef.current = [];
+      
+      const size = window.innerWidth < 768 ? 40 : 60;
+      const columns = Math.ceil(window.innerWidth / size);
+      const rows = Math.ceil(window.innerHeight / size);
+
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < columns; x++) {
           const cell = document.createElement('div');
-          cell.className = 'absolute bg-gray-800/20 border border-white/5';
-          cell.style.width = `${cellSize}px`;
-          cell.style.height = `${cellSize}px`;
-          cell.style.left = `${x * cellSize}px`;
-          cell.style.top = `${y * cellSize}px`;
+          cell.className = 'absolute bg-white/[0.03]';
+          cell.style.width = `${size}px`;
+          cell.style.height = `${size}px`;
+          cell.style.left = `${x * size}px`;
+          cell.style.top = `${y * size}px`;
           
+          // Animate each cell individually
+          gsap.fromTo(cell, 
+            { opacity: 0 },
+            { 
+              opacity: 0.08,
+              delay: (x * 0.01) + (y * 0.005),
+              duration: 0.8,
+              ease: "circ.out"
+            }
+          );
+
           containerRef.current.appendChild(cell);
-          cellsRef.current.push(cell);
+          gridRef.current.push(cell);
         }
       }
-    }
+    };
 
-    // Mouse move interaction
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      
-      const rect = containerRef.current.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
-      
-      cellsRef.current.forEach((cell, i) => {
+    createGrid();
+    window.addEventListener('resize', createGrid);
+
+    // Interactive mouse effects
+    const handleMouseMove = (e) => {
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+
+      gridRef.current.forEach((cell) => {
         const rect = cell.getBoundingClientRect();
-        const dx = (rect.left + rect.width/2) - mouseX;
-        const dy = (rect.top + rect.height/2) - mouseY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
+        const cellX = rect.left + rect.width/2;
+        const cellY = rect.top + rect.height/2;
+        const distance = Math.sqrt(
+          Math.pow(mouseX - cellX, 2) + 
+          Math.pow(mouseY - cellY, 2)
+        );
+
+        const intensity = 1 - Math.min(distance/300, 0.8);
         gsap.to(cell, {
-          background: `rgba(255,255,255,${0.05 + 0.15 * (1 - Math.min(distance/200, 1))})`,
-          scale: 1 - (0.1 * (1 - Math.min(distance/300, 1))),
-          duration: 0.5
+          background: `rgba(255,255,255,${0.02 + intensity * 0.15})`,
+          duration: 1.5,
+          ease: "power2.out"
         });
       });
-    }
+    };
 
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+
+    // Title animation
+    gsap.from(titleRef.current, {
+      opacity: 0,
+      y: 40,
+      duration: 1.2,
+      ease: "power4.out"
+    });
+
+    // Cards animation
+    gsap.from(cardsRef.current, {
+      opacity: 0,
+      y: 60,
+      duration: 1,
+      stagger: {
+        each: 0.15,
+        from: "center"
+      },
+      ease: "back.out(2.5)",
+      scrollTrigger: {
+        trigger: ".cards-container",
+        start: "top 70%"
+      }
+    });
+
+    return () => {
+      window.removeEventListener('resize', createGrid);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   return (
-  <section className="relative w-full min-h-[100vh] pt-40 pb-32 px-6 bg-gray-950 overflow-hidden">
-    
-    {/* Animated grid background - place it before the content */}
-    <div 
-      ref={containerRef}
-      className="absolute inset-0 w-full h-full pointer-events-none z-0"
-    >
+    <section className="relative w-full min-h-screen py-16 md:py-24 px-6 overflow-hidden">
+      {/* Interactive grid layer */}
       <div 
-        className="absolute inset-0 bg-gradient-to-b from-violet-950/50 to-gray-950/90"
-        style={{ backdropFilter: 'blur(10px)' }}
+        ref={containerRef}
+        
+        className="absolute inset-0 w-full h-full pointer-events-none z-0"
       />
-    </div>
+      <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-pink-400/10 blur-3xl rounded-full z-0" />
+      <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-cyan-400/10 blur-3xl rounded-full z-0" />
+      {/* Gradient overlay */}
+      <div className="absolute inset-0  z-1" />
 
-    {/* Content - sits above grid */}
-    <div className="relative z-10 max-w-7xl mx-auto">
-      <div className="text-center mb-28">
-        <h2 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300 mb-6">
-          Why Our Network Wins
-        </h2>
-        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-          Cutting through the noise with bulletproof infrastructure
-        </p>
-      </div>
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* Enhanced Header */}
+        <div className="text-center mb-16 md:mb-24 px-4" ref={titleRef}>
+          <span className="inline-block px-4 py-2 rounded-full bg-white/5 backdrop-blur border border-white/10 text-sm text-cyan-400 mb-6">
+            iGaming Messaging Solutions
+          </span>
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+              A2P SMS
+            </span> Benefits for Casino Platforms
+          </h2>
+          <p className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto">
+            High-performance messaging infrastructure engineered specifically for online gambling operators
+          </p>
+        </div>
 
-      {/* Benefit tiles */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-8 max-w-6xl mx-auto">
-        {benefits.map((benefit, i) => (
-          <div 
-            key={i}
-            className="relative bg-black/20 border border-white/10 rounded-xl p-8 backdrop-blur-sm hover:backdrop-blur-md transition-all"
-            style={{
-              boxShadow: `0 0 40px ${benefit.color}30`,
-              transformStyle: 'preserve-3d'
-            }}
-            onMouseEnter={(e) => {
-              gsap.to(e.currentTarget, {
-                y: -10,
-                boxShadow: `0 0 60px ${benefit.color}50`,
-                duration: 0.3
-              });
-            }}
-            onMouseLeave={(e) => {
-              gsap.to(e.currentTarget, {
-                y: 0,
-                boxShadow: `0 0 40px ${benefit.color}30`,
-                duration: 0.3
-              });
-            }}
-          >
+        {/* Premium Cards */}
+        <div className="cards-container grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6 max-w-6xl mx-auto">
+          {benefits.map((benefit, i) => (
             <div 
-              className="w-4 h-4 rounded-full mb-4"
-              style={{ background: benefit.color }}
-            />
-            <h3 
-              className="text-xl font-semibold mb-2"
-              style={{ color: benefit.color }}
+              key={i}
+              ref={el => cardsRef.current[i] = el}
+              className="group relative flex flex-col h-full"
             >
-              {benefit.label}
-            </h3>
-            <p className="text-gray-300 text-sm">
-              {i === 0 && "99.97% delivery rates through proprietary routes"}
-              {i === 1 && "2-5x better conversion than standard providers"}
-              {i === 2 && "Military-grade encryption at every network hop"}
-              {i === 3 && "Direct connections in 50+ target markets"}
-              {i === 4 && "Add 100,000+ messages in seconds with zero lag"}
-            </p>
+              <div className="flex-1 p-6 md:p-8 bg-white/5 backdrop-blur-lg border border-white/5 rounded-xl transition-all duration-500 group-hover:bg-white/10 group-hover:border-white/20">
+                <div 
+                  className="text-4xl md:text-5xl mb-5 md:mb-6 transition-transform duration-500 group-hover:scale-110"
+                  style={{ color: benefit.color }}
+                >
+                  {benefit.icon}
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-4 md:mb-5">
+                  {benefit.title}
+                </h3>
+                <ul className="space-y-3 md:space-y-4">
+                  {benefit.details.map((detail, j) => (
+                    <li 
+                      key={j}
+                      className="text-gray-300 text-base md:text-[15px] flex items-start leading-snug"
+                    >
+                      <span 
+                        className="inline-block w-2 h-2 rounded-full mr-3 mt-2 flex-shrink-0 transition-all duration-300 group-hover:scale-150" 
+                        style={{ backgroundColor: benefit.color }}
+                      />
+                      <span className="flex-1">{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              {/* Enhanced hover effect */}
+              <div 
+                className="absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-700 pointer-events-none"
+                style={{ 
+                  background: `radial-gradient(200px at center, ${benefit.color}20, transparent 70%)` 
+                }}
+              />
+            </div>
+          ))}
+        </div>
+        
+        {/* Stats Footer */}
+        <div className="mt-20 text-center">
+          <div className="inline-flex items-center gap-4 bg-white/5 backdrop-blur border border-white/10 rounded-full px-6 py-3">
+            <div className="text-cyan-400 text-sm md:text-base">
+              <span className="font-bold">99.97%</span> Delivery Rate
+            </div>
+            <div className="w-px h-6 bg-white/20"></div>
+            <div className="text-cyan-400 text-sm md:text-base">
+              <span className="font-bold">200+</span> Global Destinations
+            </div>
+            <div className="w-px h-6 bg-white/20"></div>
+            <div className="text-cyan-400 text-sm md:text-base">
+              <span className="font-bold">24/7</span> Monitoring
+            </div>
           </div>
-        ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
-
+    </section>
+  );
 };
 
-export default BenefitsGrid;
+export default Benefits;

@@ -9,9 +9,11 @@ import ContactForm from '../components/ContactForm'
 import FeaturesShowcase from '../components/FeaturesShowcase'
 import Footer from '../components/Footer'
 
+
 const HomepageGaming = () => {
   return (
     <div>
+      
       <Hero />
       <About />
       <FeaturesShowcase />

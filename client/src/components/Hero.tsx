@@ -1,88 +1,226 @@
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
+import { useRef, useEffect } from 'react'
+import * as THREE from 'three'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
+import { gsap } from 'gsap'
 
-const Hero = () => {
-  const ref = useRef(null);
+const CyberHero = () => {
+  const mountRef = useRef(null)
+  const textRef = useRef(null)
+  const torusRef = useRef(null)
 
   useEffect(() => {
-    if (ref.current) {
-      gsap.fromTo(
-        ref.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" }
-      );
+    // Three.js Setup
+    const scene = new THREE.Scene()
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    )
+    camera.position.set(0, 0, 30)
+
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: true,
+      alpha: true
+    })
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    mountRef.current.appendChild(renderer.domElement)
+
+    // Post-processing
+    const composer = new EffectComposer(renderer)
+    const renderPass = new RenderPass(scene, camera)
+    composer.addPass(renderPass)
+
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      1.5,
+      0.4,
+      0.85
+    )
+    composer.addPass(bloomPass)
+
+    // Create DNA-like helix structure
+    const helixGroup = new THREE.Group()
+    const count = 30
+    const radius = 5
+    const particleColor = new THREE.Color(0x00ffff)
+
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 10
+      const x = Math.sin(angle) * radius
+      const y = Math.cos(angle) * radius
+      const z = i * 0.5
+
+      const particleGeometry = new THREE.SphereGeometry(0.2, 16, 16)
+      const particleMaterial = new THREE.MeshBasicMaterial({ color: particleColor })
+      const particle = new THREE.Mesh(particleGeometry, particleMaterial)
+      particle.position.set(x, y, z)
+
+      helixGroup.add(particle)
+
+      if (i > 0) {
+        const lineGeometry = new THREE.BufferGeometry()
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.3 })
+        const line = new THREE.Line(
+          lineGeometry,
+          lineMaterial
+        )
+        line.geometry.setFromPoints([
+          new THREE.Vector3(x, y, z),
+          new THREE.Vector3(
+            Math.sin(angle - (Math.PI * 10 / count)) * radius,
+            Math.cos(angle - (Math.PI * 10 / count)) * radius,
+            (i - 1) * 0.5
+          )
+        ])
+        helixGroup.add(line)
+      }
     }
-  }, []);
+
+    scene.add(helixGroup)
+    torusRef.current = helixGroup
+
+    // Floating hologram effect
+    const hologramGeometry = new THREE.TorusKnotGeometry(8, 3, 100, 16)
+    const hologramMaterial = new THREE.MeshStandardMaterial({
+      color: 0x00ffff,
+      emissive: 0x00ffff,
+      emissiveIntensity: 0.5,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.5
+    })
+    const hologram = new THREE.Mesh(hologramGeometry, hologramMaterial)
+    hologram.position.y = -5
+    scene.add(hologram)
+
+    // Particle system
+    const particleCount = 1000
+    const particlesGeometry = new THREE.BufferGeometry()
+    const posArray = new Float32Array(particleCount * 3)
+
+    for (let i = 0; i < particleCount * 3; i++) {
+      posArray[i] = (Math.random() - 0.5) * 50
+    }
+
+    particlesGeometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(posArray, 3)
+    )
+
+    const particlesMaterial = new THREE.PointsMaterial({
+      color: 0x00ffff,
+      size: 0.1,
+      transparent: true,
+      opacity: 0.8
+    })
+
+    const particles = new THREE.Points(particlesGeometry, particlesMaterial)
+    scene.add(particles)
+
+    // Mouse movement animation
+    const handleMouseMove = (e) => {
+      const x = (e.clientX / window.innerWidth) * 2 - 1
+      const y = (e.clientY / window.innerHeight) * 2 - 1
+      
+      gsap.to(helixGroup.rotation, {
+        x: y * -0.3,
+        y: x * 0.5,
+        duration: 1.5
+      })
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+
+    // Animation loop
+    const clock = new THREE.Clock()
+    
+    const animate = () => {
+      requestAnimationFrame(animate)
+      
+      const elapsedTime = clock.getElapsedTime()
+      
+      helixGroup.rotation.z += 0.002
+      hologram.rotation.x = elapsedTime * 0.1
+      hologram.rotation.y = elapsedTime * 0.1
+      
+      particles.rotation.x = elapsedTime * 0.01
+      particles.rotation.y = elapsedTime * 0.02
+
+      composer.render()
+    }
+    animate()
+
+    // Text animation
+    gsap.from(textRef.current.children, {
+      opacity: 0,
+      y: 50,
+      stagger: 0.15,
+      duration: 1.2,
+      delay: 0.5,
+      ease: "back.out(1.2)"
+    })
+
+    // Resize handler
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight
+      camera.updateProjectionMatrix()
+      renderer.setSize(window.innerWidth, window.innerHeight)
+      composer.setSize(window.innerWidth, window.innerHeight)
+    }
+    
+    window.addEventListener('resize', handleResize)
+    
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('mousemove', handleMouseMove)
+      mountRef.current?.removeChild(renderer.domElement)
+    }
+  }, [])
 
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-gradient-to-tr from-[#0B0F1C] to-[#1F1B35] px-6 md:px-16">
-      {/* Background grid effect */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:30px_30px] opacity-10 z-0" />
-
-      {/* Ambient Glow */}
-      <div className="absolute w-[300px] h-[300px] bg-[#925CFF]/20 blur-3xl rounded-full top-24 left-10 animate-pulse z-0" />
-
-      <div
-        ref={ref}
-        className="relative z-10 w-full h-full flex flex-col md:flex-row items-center justify-between gap-12 max-w-7xl mx-auto"
-      >
-        {/* Left Text Content */}
-        <div className="flex-1 text-left pt-24 md:pt-32">
-          <span className="inline-block text-sm bg-white/10 text-white px-4 py-1 rounded-full backdrop-blur border border-white/10 mb-4">
-            Secure. Scalable. Crypto SaaS.
+    <div className="relative w-full h-screen overflow-hidden bg-gray-900">
+      {/* Three.js Canvas */}
+      <div ref={mountRef} className="absolute inset-0" />
+      
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/40" />
+      
+      {/* Content */}
+      <div ref={textRef} className="relative z-10 h-full flex flex-col justify-center px-8 md:px-16 lg:px-32 max-w-7xl mx-auto">
+        <span className="inline-block mb-6 px-4 py-2 bg-blue-900/30 backdrop-blur border border-blue-400/30 rounded-full text-blue-300 text-sm">
+          Enterprise Blockchain Solutions
+        </span>
+        
+        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+            Revolutionize
           </span>
-          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight mb-6">
-            Gain Clarity<br />Take Control<br />Grow
-          </h1>
-          <p className="text-white/60 text-lg mb-8 max-w-md">
-            A powerful crypto SaaS platform designed to help you launch, manage, and scale digital assets and blockchain-based financial tools securely and efficiently.
-          </p>
-
-          <div className="flex gap-4 flex-wrap">
-            <button className="group bg-[#925CFF] hover:bg-[#7F3FFF] text-white font-semibold px-6 py-3 rounded-full shadow-md transition flex items-center gap-2">
-              <span className="group-hover:-translate-x-1 transition-transform">🚀</span> Get Started
-            </button>
-            <button className="bg-white/10 hover:bg-white/20 border border-white/10 text-white font-medium px-6 py-3 rounded-full transition">
-              Learn More
-            </button>
-          </div>
-
-          <div className="flex items-center gap-6 mt-10 text-white/80 text-sm">
-            <div className="flex -space-x-2">
-              <img
-                src="/assets/avatar1.png"
-                alt="user1"
-                className="w-8 h-8 rounded-full border-2 border-white/10"
-              />
-              <img
-                src="/assets/avatar2.png"
-                alt="user2"
-                className="w-8 h-8 rounded-full border-2 border-white/10"
-              />
-            </div>
-            <span className="hover:text-white transition duration-300">99.9% Uptime</span>
-            <span className="hover:text-white transition duration-300">400k+ Active Users</span>
-          </div>
-        </div>
-
-        {/* Right Image Mockup */}
-        <div className="flex-1 relative w-full max-w-xl">
-          <img
-            src="/assets/hero-dashboard.png"
-            alt="dashboard-preview"
-            className="rounded-2xl shadow-lg border border-white/10 w-full h-auto"
-          />
+          <br />
+          And Reach Casino & iGaming Players Instantly with A2P SMS
+        </h1>
+        
+        <p className="text-xl text-gray-300 mb-10 max-w-2xl">
+          Convert, retain, and grow your iGaming audience with powerful SMS marketing. Fast delivery. High open rates. Casino-friendly routes.
+        </p>
+        
+        <div className="flex gap-4">
+          <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-lg text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 flex items-center gap-2">
+            Get Started
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
+          <button className="px-8 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg text-white hover:bg-white/20 transition-all duration-300 flex items-center gap-2">
+            Request Demo
+          </button>
         </div>
       </div>
+    </div>
+  )
+}
 
-      {/* Scroll Cue */}
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </div>
-    </section>
-  );
-};
-
-export default Hero;
+export default CyberHero
