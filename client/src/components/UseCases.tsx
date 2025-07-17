@@ -28,7 +28,7 @@ const UseCases = () => {
     <section className="relative w-full py-24 px-6 md:px-20 bg-[#000000] text-white overflow-hidden">
       {/* Neon Glows */}
       <div className="absolute -top-40 -left-30 w-[400px] h-[400px] bg-pink-500/20 blur-3xl rounded-full z-0" />
-      <div className="absolute -bottom-20 right-0 w-[400px] h-[400px] bg-cyan-400/20 blur-3xl rounded-full z-0" />
+      <div className="absolute -bottom-40 right-0 w-[400px] h-[400px] bg-cyan-400/20 blur-3xl rounded-full z-0" />
       
       <div className="relative z-10 max-w-6xl mx-auto text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold mb-4">Verticals & Use Cases</h2>
