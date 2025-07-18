@@ -9,6 +9,7 @@ import ContactForm from '../components/ContactForm'
 import FeaturesShowcase from '../components/FeaturesShowcase'
 import Footer from '../components/Footer'
 import Menu from '../components/Menu'
+import CTAsection from '../components/CTAsection'
 
 
 const HomepageGaming = () => {
@@ -22,6 +23,7 @@ const HomepageGaming = () => {
       <WeServe />
       <UseCases />
       <Benefits />
+      <CTAsection />
       <Case />
       <ContactForm  />
       <Menu />

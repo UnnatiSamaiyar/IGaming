@@ -195,7 +195,7 @@ const CyberHero = () => {
         className="relative mt-6 z-10 h-full flex flex-col justify-center px-4 sm:px-6 md:px-12 lg:px-24 xl:px-32 max-w-7xl mx-auto"
       >
         <span className="inline-block mb-4 sm:mb-6 p-5 py-1 bg-blue-900/30 backdrop-blur border border-blue-400/30 rounded-full text-blue-300 text-xs sm:text-sm w-fit">
-          Enterprise Blockchain Solutions
+          SMS Solutions
         </span>
 
 
