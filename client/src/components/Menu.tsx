@@ -391,10 +391,11 @@ const Menu = () => {
   const getFlag = (code) => emojiFlags.countryCode(code)?.emoji || "🏳️";
 
   return (
-    <section className="py-16 px-4 bg-black text-white font-sans">
+    <section className="pt-28 pb-16 px-4 text-white font-sans">
+
       <div className="max-w-7xl mx-auto">
         {/* Sticky Header */}
-        <div className="sticky top-0 z-50 bg-black pb-6 pt-2">
+        <div className=" top-0 z-50  pb-6 pt-2">
           <h2 className="text-4xl font-extrabold text-center mb-6 text-white">
             🌍 Explore Global A2P SMS Performance
           </h2>

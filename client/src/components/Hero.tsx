@@ -213,7 +213,7 @@ const CyberHero = () => {
         </p>
 
         <div className="flex flex-wrap gap-4">
-          <button className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-lg text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
+          <button onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })} className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-lg text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base hover:cursor-pointer">
             Get Started
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -229,7 +229,7 @@ const CyberHero = () => {
             </svg>
           </button>
 
-          <button className="px-6 sm:px-8 py-3 sm:py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg text-white hover:bg-white/20 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
+          <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="hover:cursor-pointer px-6 sm:px-8 py-3 sm:py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg text-white hover:bg-white/20 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
             Request Demo
           </button>
         </div>

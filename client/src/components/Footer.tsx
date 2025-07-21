@@ -9,7 +9,7 @@ const Footer = () => {
           <Link to="/">
             <img
               src="/logo.png"
-              alt="AspireAI Logo"
+              alt="Logo"
               width={200}
               height={60}
               className="h-12 py-1 w-auto object-contain"
@@ -44,7 +44,7 @@ const Footer = () => {
 
         <div className="flex flex-col items-center">
           <span className="block text-sm text-gray-400">
-            © {new Date().getFullYear()} AspireAI. All Rights Reserved.
+            © {new Date().getFullYear()} IGaming. All Rights Reserved.
           </span>
           <div className="flex space-x-4 mt-2">
             <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition duration-300">

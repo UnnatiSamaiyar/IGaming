@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { SplitText } from "gsap/SplitText";
 import AboutVideo from "../assets/Images/AboutVideo.mp4";
+import loadingGif from '../assets/Images/igaming-video.gif';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin, SplitText);
 
@@ -17,26 +18,27 @@ const About = () => {
 
   const features = [
     {
-      title: "Real-time Analytics",
-      desc: "Monitor engagement with millisecond precision",
+      title: "High-Delivery Casino Routes",
+      desc: "Optimized A2P SMS delivery for iGaming across global markets.",
+      icon: "🚀",
+    },
+    {
+      title: "Compliance & Delivery",
+      desc: "DLT-registered, GDPR-compliant with real-time delivery insights.",
+      icon: "🔐",
+    },
+    {
+      title: "Tailored Campaigns",
+      desc: "Send FTD reminders, bonus codes, and tournament alerts easily.",
+      icon: "💡",
+    },
+    {
+      title: "Real-Time Analytics",
+      desc: "Monitor delivery, clicks, and performance instantly.",
       icon: "📊",
     },
-    {
-      title: "Military Encryption",
-      desc: "End-to-end AES-256 protected channels",
-      icon: "🔒",
-    },
-    {
-      title: "AI Optimization",
-      desc: "Dynamic routing powered by machine learning",
-      icon: "🤖",
-    },
-    {
-      title: "Global Infrastructure",
-      desc: "70+ edge locations worldwide",
-      icon: "🌐",
-    },
   ];
+
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
@@ -175,6 +177,7 @@ const About = () => {
         background:
           "radial-gradient(circle at center, #07050F 0%, #000000 100%)",
       }}
+      id="about"
     >
       {!isMobile && (
         <div
@@ -200,15 +203,15 @@ const About = () => {
 
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-20 items-start">
           {/* Video Block */}
           <div className="relative">
             <h2 className="hero-title text-5xl md:text-7xl font-bold leading-tight tracking-tight text-white">
               Redefining Communication Infrastructure
             </h2>
-            <div
+            {/* <div
               ref={videoRef}
-              className="relative mt-3 aspect-video rounded-3xl overflow-hidden border border-white/20 shadow-2xl will-change-transform cursor-pointer"
+              className="relative mt-5 aspect-video rounded-3xl overflow-hidden border border-white/20 shadow-2xl will-change-transform cursor-pointer"
             >
               <video
                 autoPlay
@@ -232,17 +235,43 @@ const About = () => {
                     }}
                   />
                 ))}
+            </div> */}
+            <div
+              ref={videoRef}
+              className="relative mt-5 aspect-video rounded-3xl overflow-hidden shadow-2xl will-change-transform cursor-pointer flex items-center justify-center"
+            >
+              <img
+                src={loadingGif}
+                alt="loading gif"
+                className="object-contain max-h-full"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-black/10 pointer-events-none" />
+
+              {!isMobile &&
+                [...Array(5)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="particle absolute w-2 h-2 rounded-full opacity-0 pointer-events-none"
+                    style={{
+                      backgroundColor: i % 2 ? "#EC4899" : "#3B82F6",
+                      left: `${Math.random() * 100}%`,
+                      top: `${Math.random() * 100}%`,
+                    }}
+                  />
+                ))}
             </div>
+
           </div>
 
           {/* Content Block */}
           <div className="space-y-10">
             <p className="text-xl text-zinc-300 leading-relaxed">
-              Our quantum messaging framework delivers zero-latency
-              communications with military-grade security and enterprise
-              scalability. Built for the next generation of real-time
-              applications.
+              🎮 Why iGaming & Casino Brands Choose Us: From high-conversion A2P
+              routes and compliance-first delivery to real-time analytics and API-driven
+              campaign execution – we power global iGaming communication with precision.
             </p>
+
 
             {/* Features Grid */}
             <div className="relative z-10">
@@ -263,7 +292,7 @@ const About = () => {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4 pt-6">
+            {/* <div className="flex flex-wrap gap-4 pt-6">
               <button className="hover:cursor-pointer relative px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-lg font-medium overflow-hidden group">
                 <span className="relative z-10 text-white">Get Started</span>
                 <span className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -272,9 +301,11 @@ const About = () => {
               <button className="hover:cursor-pointer px-8 py-4 text-white rounded-full bg-zinc-900/70 border border-zinc-700 hover:bg-zinc-900/40 hover:border-zinc-500 text-lg font-medium transition-all">
                 Watch Demo
               </button>
-            </div>
+            </div> */}
           </div>
+
         </div>
+
       </div>
     </section>
   );

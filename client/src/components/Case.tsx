@@ -8,27 +8,27 @@ gsap.registerPlugin(ScrollTrigger);
 const USE_CASES = [
   {
     label: "Welcome Bonus Offer",
-    example: "“Welcome to <strong>BetZone</strong>! 🎉 Claim your ₹1,000 bonus now. Tap to activate: [link]”"
+    example: "Welcome to <strong>BetZone</strong>! 🎉 Claim your ₹1,000 bonus now. Tap to activate: [link]"
   },
   {
     label: "FTD Reminder",
-    example: "“Double your first deposit today! Offer ends at midnight. [Deposit Now]”"
+    example: "Double your first deposit today! Offer ends at midnight. [Deposit Now]"
   },
   {
     label: "Live Casino Alert",
-    example: "“⚡ Blackjack table now live with ₹50,000 prize pool! Join now: [link]”"
+    example: "⚡ Blackjack table now live with ₹50,000 prize pool! Join now: [link]"
   },
   {
     label: "OTP for Login",
-    example: "“Your Bet365 verification code is 834276. Valid for 5 mins.”"
+    example: "Your Bet365 verification code is 834276. Valid for 5 mins."
   },
   {
     label: "Account Balance Alert",
-    example: "“You’ve won ₹3,200 on Mega Spin! Withdraw or play more: [link]”"
+    example: "You’ve won ₹3,200 on Mega Spin! Withdraw or play more: [link]"
   },
   {
     label: "Re-engagement Campaign",
-    example: "“We miss you! Here’s a 25 free spin bonus to welcome you back: [link]”"
+    example: "We miss you! Here’s a 25 free spin bonus to welcome you back: [link]"
   }
 ];
 

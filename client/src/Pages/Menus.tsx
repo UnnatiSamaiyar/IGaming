@@ -1,10 +1,12 @@
 
-import Menu from 'src/components/Menu'
+import ContactForm from '../components/ContactForm'
+import Menu from '../components/Menu'
 
 const Menus = () => {
   return (
     <div>
       <Menu />
+      <ContactForm />
     </div>
   )
 }

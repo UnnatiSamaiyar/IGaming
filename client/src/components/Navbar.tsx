@@ -136,11 +136,11 @@ const Navbar = () => {
     }, []);
 
     return (
-        <div className="relative">
+        <div className="relative ">
             <div ref={containerRef} className="absolute w-full h-full pointer-events-none" />
             <nav
                 ref={navbarRef}
-                className="fixed w-full py-3 px-6 md:px-12 flex justify-between items-center transition-all duration-300 z-50"
+                className="fixed w-full py-3 px-6 md:px-12 h-20 flex justify-between items-center transition-all duration-300 z-100"
                 style={{
                     backdropFilter: scrolled ? 'blur(10px)' : 'none',
                     backgroundColor: scrolled ? 'rgba(10, 25, 47, 0.8)' : 'rgba(10, 25, 47, 0)',
@@ -151,15 +151,17 @@ const Navbar = () => {
                 }}
             >
                 <div className="text-white font-bold text-xl">
+                    <a href="/">
                     <img
                         src={logo}
                         alt="Modern tech company logo in dark blue with white text"
                         className="h-16"
                     />
+                    </a>
                 </div>
 
                 <ul className="hidden md:flex space-x-2">
-                    <NavItem href="#home" isActive={!scrolled}>Home</NavItem>
+                    <NavItem href="/" isActive={!scrolled}>Home</NavItem>
                     <NavItem href="#about" isActive={!scrolled}>About</NavItem>
                     <NavItem href="#services" isActive={!scrolled}>Services</NavItem>
                     <NavItem href="#industry" isActive={!scrolled}>Industry</NavItem>

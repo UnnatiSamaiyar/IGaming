@@ -14,40 +14,161 @@ const FeaturesShowcase = () => {
   const decorRef = useRef(null);
   const raycastRef = useRef(null);
 
-  const features = [
+  const featureTabs = [
     {
-      title: "Neural Analytics",
-      icon: "📈",
-      stats: ["200ms Response", "99.99% SLA", "50+ Metrics"],
-      color: "from-purple-600 to-indigo-500",
-      gradient: "rgba(124, 58, 237, 0.3)",
-      accent: "#8B5CF6",
+      heading: "A2P SMS Marketing",
+      icon: "🚀",
+      items: [
+        {
+          title: "Casino Traffic",
+          icon: "🛰️",
+          stats: ["Global routes", "Grey/white support", "Fast delivery"],
+          color: "from-purple-600 to-indigo-500",
+          gradient: "rgba(124, 58, 237, 0.3)",
+          accent: "#8B5CF6",
+        },
+        {
+          title: "Bonus Alerts",
+          icon: "🎁",
+          stats: ["Instant bonuses", "API triggers", "Boost FTDs"],
+          color: "from-purple-600 to-indigo-500",
+          gradient: "rgba(124, 58, 237, 0.3)",
+          accent: "#8B5CF6",
+        },
+        {
+          title: "Reactivation",
+          icon: "🔄",
+          stats: ["Win-back flows", "Auto campaigns", "Personal offers"],
+          color: "from-purple-600 to-indigo-500",
+          gradient: "rgba(124, 58, 237, 0.3)",
+          accent: "#8B5CF6",
+        },
+        {
+          title: "Compliance Support",
+          icon: "🛡️",
+          stats: ["DLT/GDPR ready", "Country rules", "Content filters"],
+          color: "from-purple-600 to-indigo-500",
+          gradient: "rgba(124, 58, 237, 0.3)",
+          accent: "#8B5CF6",
+        },
+      ],
     },
     {
-      title: "AI Convergence",
-      icon: "🤖",
-      stats: ["Predictive Scaling", "Smart Routing", "Auto-Healing"],
-      color: "from-teal-500 to-emerald-500",
-      gradient: "rgba(20, 184, 166, 0.3)",
-      accent: "#10B981",
+      heading: "Vertical-Specific Campaigns",
+      icon: "🎯",
+      items: [
+        {
+          title: "Online Casino",
+          icon: "🎰",
+          stats: ["Slot alerts", "Loyalty rewards", "Reactivation triggers"],
+          color: "from-teal-500 to-emerald-500",
+          gradient: "rgba(20, 184, 166, 0.3)",
+          accent: "#10B981",
+        },
+        {
+          title: "Sports Betting",
+          icon: "🏟️",
+          stats: ["Odds updates", "Match promos", "Live alerts"],
+          color: "from-teal-500 to-emerald-500",
+          gradient: "rgba(20, 184, 166, 0.3)",
+          accent: "#10B981",
+        },
+        {
+          title: "Fantasy & Poker",
+          icon: "🧠",
+          stats: ["Team reminders", "Chip offers", "Play nudges"],
+          color: "from-teal-500 to-emerald-500",
+          gradient: "rgba(20, 184, 166, 0.3)",
+          accent: "#10B981",
+        },
+        {
+          title: "Crypto & eSports",
+          icon: "🪙",
+          stats: ["Token drops", "eSports alerts", "SMS + Telegram"],
+          color: "from-teal-500 to-emerald-500",
+          gradient: "rgba(20, 184, 166, 0.3)",
+          accent: "#10B981",
+        },
+      ],
     },
     {
-      title: "Omni-Network",
+      heading: "Retention & Growth",
+      icon: "📊",
+      items: [
+        {
+          title: "Automation",
+          icon: "🔑",
+          stats: ["OTP + Welcome SMS", "Bonus Trigger", "API Nurture Flow"],
+          color: "from-teal-500 to-emerald-500",
+          gradient: "rgba(20, 184, 166, 0.3)",
+          accent: "#10B981",
+        },
+        {
+          title: "Deposit Triggers",
+          icon: "💰",
+          stats: ["FTD Reminder", "Bonus Expiry", "Upsell Campaigns"],
+          color: "from-teal-500 to-emerald-500",
+          gradient: "rgba(20, 184, 166, 0.3)",
+          accent: "#10B981",
+        },
+        {
+          title: "Session Boosters",
+          icon: "🎮",
+          stats: ["Game Live Alert", "Leaderboard Push", "Jackpot Promo"],
+          color: "from-teal-500 to-emerald-500",
+          gradient: "rgba(20, 184, 166, 0.3)",
+          accent: "#10B981",
+        },
+        {
+          title: "Churn Prevention",
+          icon: "🔁",
+          stats: ["Drop Reactivation", "Deposit Reminder", "Win-back Offer"],
+          color: "from-teal-500 to-emerald-500",
+          gradient: "rgba(20, 184, 166, 0.3)",
+          accent: "#10B981",
+        },
+      ],
+    },
+    {
+      heading: "Regional Compliance",
       icon: "🌐",
-      stats: ["80+ Edge Nodes", "Geo-Sharding", "Anycast"],
-      color: "from-blue-500 to-cyan-400",
-      gradient: "rgba(6, 182, 212, 0.3)",
-      accent: "#06B6D4",
-    },
-    {
-      title: "Quantum Encryption",
-      icon: "🔐",
-      stats: ["ZK-Proofs", "FIPS 140-3", "Post-Quantum"],
-      color: "from-amber-500 to-orange-400",
-      gradient: "rgba(245, 158, 11, 0.3)",
-      accent: "#F59E0B",
+      items: [
+        {
+          title: "High-Conversion Markets",
+          icon: "📈",
+          stats: ["Casino Traffic", "Grey Routes", "DLT Compliant", "India, Turkey, Brazil"],
+          color: "from-teal-500 to-emerald-500",
+          gradient: "rgba(20, 184, 166, 0.3)",
+          accent: "#10B981",
+        },
+        {
+          title: "Game-Heavy Region",
+          icon: "🎮",
+          stats: ["Rummy & Baccara", "Telegram + SMS", "Local Language", "Southeast Asia"],
+          color: "from-teal-500 to-emerald-500",
+          gradient: "rgba(20, 184, 166, 0.3)",
+          accent: "#10B981",
+        },
+        {
+          title: "Sportsbook Surge",
+          icon: "⚽",
+          stats: ["Betting Traffic", "Dynamic Sender", "Local Compliance", "LatAm (Mexico, Brazil)"],
+          color: "from-teal-500 to-emerald-500",
+          gradient: "rgba(20, 184, 166, 0.3)",
+          accent: "#10B981",
+        },
+        {
+          title: "Mobile-First Users",
+          icon: "📱",
+          stats: ["Sensitive Routes", "Crypto Support", "Content Control", "Africa & MENA"],
+          color: "from-teal-500 to-emerald-500",
+          gradient: "rgba(20, 184, 166, 0.3)",
+          accent: "#10B981",
+        },
+      ],
     },
   ];
+
 
   useEffect(() => {
     // Section entrance animation
@@ -138,6 +259,7 @@ const FeaturesShowcase = () => {
     <section
       ref={sectionRef}
       className="relative w-full py-40 px-6 md:px-16 overflow-hidden bg-gray-950"
+      id="services"
     >
       {/* Raycast effect layer */}
       <div
@@ -165,21 +287,20 @@ const FeaturesShowcase = () => {
         {/* Section header */}
         <div className="text-center mb-24">
           <span className="inline-block mb-4 px-4 py-2 bg-white/5 backdrop-blur-md rounded-full border border-white/10 text-sm text-white/90">
-            Enterprise-Grade Infrastructure
+            Globally Compliant Messaging Stack
           </span>
           <h2 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300 mb-6">
-            Architectonic <span className="text-[#925CFF]">Features</span>
+            Enterprise-Ready <span className="text-[#925CFF]">Routing</span> & Scale
           </h2>
           <p className="text-xl text-gray-400 mx-auto max-w-3xl">
-            Precision-engineered network capabilities for hyper-scale
-            deployments
+            Built for high-throughput delivery, geo-optimized routes, and region-specific compliance—engineered for iGaming success across borders.
           </p>
         </div>
 
+
         {/* Tabbed Navigation */}
-        <div className="tabs-container relative mb-20 max-w-4xl mx-auto">
-          <div className="relative border-b border-gray-800 flex justify-center flex-wrap gap-4">
-            {/* Active Indicator */}
+        <div className="tabs-container relative mb-20 max-w-6xl mx-auto">
+          <div className="relative border-b border-gray-800 flex justify-center flex-wrap gap-5">
             <div
               className="absolute bottom-0 h-0.5 bg-[#925CFF] rounded-full transition-all duration-300"
               style={{
@@ -188,26 +309,23 @@ const FeaturesShowcase = () => {
               }}
             />
 
-            {/* Tab Buttons */}
-            {features.map((feature, i) => (
+            {featureTabs.map((tab, i) => (
               <button
                 key={i}
                 ref={(el) => (tabsRef.current[i] = el)}
                 onClick={() => setActiveTab(i)}
                 onMouseEnter={() => setIsHovering(i)}
                 onMouseLeave={() => setIsHovering(null)}
-                className={`relative px-6 py-3 text-base font-medium transition-colors ${
-                  activeTab === i
-                    ? "text-white"
-                    : "text-gray-400 hover:text-white"
-                }`}
+                className={`relative px-6 py-3 text-base font-medium transition-colors ${activeTab === i
+                  ? "text-white"
+                  : "text-gray-400 hover:text-white"
+                  }`}
               >
                 <span className="relative z-10 flex items-center gap-2">
-                  {feature.icon}
-                  {feature.title}
+                  {tab.icon}
+                  {tab.heading}
                 </span>
 
-                {/* Optional: Hover background */}
                 {isHovering === i && (
                   <div className="absolute inset-0 bg-white/5 rounded-lg backdrop-blur-sm z-0" />
                 )}
@@ -216,9 +334,10 @@ const FeaturesShowcase = () => {
           </div>
         </div>
 
+
         {/* Features grid */}
         <div className="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          {features.map((feature, i) => (
+          {featureTabs[activeTab].items.map((feature, i) => (
             <div
               key={i}
               ref={(el) => (cardsRef.current[i] = el)}
@@ -246,7 +365,6 @@ const FeaturesShowcase = () => {
                 </ul>
               </div>
 
-              {/* Hover state enhancement */}
               {isHovering === i && (
                 <>
                   <div
@@ -262,8 +380,9 @@ const FeaturesShowcase = () => {
           ))}
         </div>
 
+
         {/* CTA */}
-        <div className="text-center mt-20">
+        {/* <div className="text-center mt-20">
           <button className="px-10 py-5 bg-gradient-to-r from-[#925CFF] to-[#7F3FFF] rounded-xl text-white font-semibold hover:shadow-lg hover:shadow-[#925CFF]/30 transition-all duration-300 group relative overflow-hidden">
             <span className="relative z-10 flex items-center justify-center gap-3">
               Explore Architectural Blueprint
@@ -282,7 +401,7 @@ const FeaturesShowcase = () => {
             </span>
             <span className="absolute inset-0 bg-gradient-to-r from-[#925CFF] to-[#7F3FFF] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* Global styles */}
