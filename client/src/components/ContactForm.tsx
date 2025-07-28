@@ -58,16 +58,29 @@ const ContactForm = () => {
     e.preventDefault();
     setIsLoading(true);
 
+    // Simple frontend validation (redundant but good UX)
+    const { name, email, subject, message } = formData;
+    if (!name || !email || !subject || !message) {
+      toast.error("Please fill in all required fields.");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch(`${backendUrl}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error('Submission failed');
-      
-      toast.success('Message sent successfully!');
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.error || "Something went wrong. Try again.");
+        throw new Error(data.error);
+      }
+
+      toast.success(data.message || "Message sent successfully!");
       setFormData({
         name: '',
         company: '',
@@ -76,15 +89,17 @@ const ContactForm = () => {
         subject: '',
         message: '',
       });
-    } catch (error) {
-      toast.error(error.message || 'Failed to send message');
+    } catch (err) {
+      console.error("Form submission error:", err.message);
+      toast.error("Failed to send message. Please try again later.");
     } finally {
       setIsLoading(false);
     }
   };
 
+
   return (
-    <section 
+    <section
       ref={sectionRef}
       className="w-full py-24 px-6 md:px-16 bg-gradient-to-b from-[#0B0F1C] to-[#1A1A2E] text-white"
       id="contact"
@@ -109,10 +124,10 @@ const ContactForm = () => {
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-full bg-indigo-500/10 text-indigo-400">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21.5 12H16c-.7 2-2 3-4 3s-3.3-1-4-3H2.5"/>
-                    <path d="M5.5 5.5 2.5 12l3 6.5"/>
-                    <path d="m18.5 5.5 3 6.5-3 6.5"/>
-                    <path d="M12 7a5 5 0 0 0-5 5"/>
+                    <path d="M21.5 12H16c-.7 2-2 3-4 3s-3.3-1-4-3H2.5" />
+                    <path d="M5.5 5.5 2.5 12l3 6.5" />
+                    <path d="m18.5 5.5 3 6.5-3 6.5" />
+                    <path d="M12 7a5 5 0 0 0-5 5" />
                   </svg>
                 </div>
                 <div>
@@ -124,7 +139,7 @@ const ContactForm = () => {
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-full bg-indigo-500/10 text-indigo-400">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                   </svg>
                 </div>
                 <div>
@@ -136,8 +151,8 @@ const ContactForm = () => {
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-full bg-indigo-500/10 text-indigo-400">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
                   </svg>
                 </div>
                 <div>

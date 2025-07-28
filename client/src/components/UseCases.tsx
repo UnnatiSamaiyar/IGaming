@@ -2,13 +2,14 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 const VERTICALS = [
-  { emoji: "🎰", title: "Online Casinos", desc: "... bonus spins, FTD nudges ..." },
-  { emoji: "⚽", title: "Sports Betting", desc: "... real-time odds & event alerts ..." },
-  { emoji: "📱", title: "Fantasy Sports", desc: "... match reminders & bonus nudges ..." },
-  { emoji: "♠️", title: "Poker / Rummy", desc: "... tournament promos & chip reloads ..." },
-  { emoji: "🎮", title: "Esports Betting", desc: "... CS:GO, PUBG & DOTA event nudges ..." },
-  { emoji: "🚀", title: "Crash Games", desc: "... multiplier streaks, countdown bonuses ..." },
+  { emoji: "🎰", title: "Online Casinos", desc: "Promote bonus spins, FTD nudges, loyalty rewards & more" },
+  { emoji: "⚽", title: "Sports Betting", desc: "Boost real-time odds, event alerts, and match offers" },
+  { emoji: "📱", title: "Fantasy Sports", desc: "Send match reminders, bonus nudges, and team tips" },
+  { emoji: "♠️", title: "Poker / Rummy", desc: "Highlight tournaments, chip reloads, referrals, and leaderboards" },
+  { emoji: "🎮", title: "Esports Betting", desc: "Target CS:GO, PUBG, DOTA events and bonus drops" },
+  { emoji: "🚀", title: "Crash Games", desc: "Trigger multiplier streaks, countdowns, cashbacks, and streak rewards" },
 ];
+
 
 const UseCases = () => {
   const ref = useRef<HTMLDivElement>(null);

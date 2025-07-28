@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import IgmaingLogo from '../assets/Images/logo.png'
 
 const Footer = () => {
   return (
@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <Link to="/">
             <img
-              src="/logo.png"
+              src={IgmaingLogo}
               alt="Logo"
               width={200}
               height={60}
@@ -23,13 +23,13 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link to="/privacy-policy" className="hover:text-cyan-400 transition duration-300 me-4 md:me-6">
-                Privacy Policy
+              <Link to="/services" className="hover:text-cyan-400 transition duration-300 me-4 md:me-6">
+                Services
               </Link>
             </li>
             <li>
-              <Link to="/terms-of-use" className="hover:text-cyan-400 transition duration-300 me-4 md:me-6">
-                Terms of Use
+              <Link to="/industry" className="hover:text-cyan-400 transition duration-300 me-4 md:me-6">
+                Industry
               </Link>
             </li>
             <li>
